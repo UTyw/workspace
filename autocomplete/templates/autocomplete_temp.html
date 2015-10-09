@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test for autocomplete</title>
+    <script src="//code.jquery.com.jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="/scripts/autocomplete.js"></script>
+</head>
+<body>
+    <form action="/api/search" method="get">
+        <div class="ui-widget">
+            <input type="text" id="search_key">
+        </div>
+        <input align="center" type="submit" value="Search">
+    </form>
+</body>
+</html>
