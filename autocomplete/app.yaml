@@ -1,5 +1,5 @@
 version: 1
-runtime: python 27
+runtime: python27
 api_version: 1
 threadsafe: true
 application: autocomplete
@@ -11,7 +11,10 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
-- url: handlers
+- url: /handlers # seems not necessary
+  script: routing.app
+
+- url: /.*
   script: routing.app
 
 libraries:
