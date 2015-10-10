@@ -5,6 +5,9 @@ threadsafe: true
 application: autocomplete
 
 handlers:
+- url: /images
+  static_dir: images
+
 - url: /scripts
   static_dir: scripts
 

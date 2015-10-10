@@ -4,8 +4,9 @@ $(document).ready(function(){
         minLength: 1,
         //source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ],
 	source: function(request, response){
-            cache = {};
-            var term = request.term;
+            var cache = {};
+            var KeywordSet = [];
+            var term = $.ui.autocomplete.escapeRegex(request.term);
             if(term in cache){
                 response(cache[term]);
                 return;
