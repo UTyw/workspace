@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+
+  "name": "Connexus uploader",
+  "description": "Upload images to Connexus through extension",
+  "version": "0.0",
+
+  "icons":{
+    "16": "images/icon-bitty.png",
+    "48": "images/icon-small.png",
+    "128": "images/icon-large.png"
+  },
+
+  "background":{
+    "scripts": ["sample.js"]
+  },
+
+  "browser_action":{
+    "default_icon":"images/icon.png"
+  },
+  
+  "permissions":[
+    "activeTab", 
+    "contextMenus",
+    "https:ajax.googleapis.com",
+    "http://localhost:8080/api/*"
+  ]
+}
