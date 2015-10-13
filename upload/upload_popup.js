@@ -2,7 +2,7 @@ var _marker = 0;
 var _map;
 var austin = {lat: 30.25, lng: -97.75};
 var STREAM_AUTOCOMPLETE_URL = "http://localhost:8080/api/stream_autocomplete";
-var UPLOAD_URL = "http://localhost:8080/api/extension_upload";
+var UPLOAD_URL = "http://localhost:8080/api/upload_image_from_extension";
 
 function showLocation(location){ // show the location of current Marker
    console.log("Show location changes")
@@ -74,7 +74,7 @@ $(document).ready(function(){
                 response(cache[term]);
                 return;
             }
-            $.getJSON("http://localhost:8080/api/stream_autocomplete", {"keywords": term}, function(data, status, xhr){
+            $.getJSON(STREAM_AUTOCOMPLETE_URL, {"keywords": term}, function(data, status, xhr){
                 cache[term] = data;
                 response(data);
             })
@@ -88,7 +88,7 @@ $(document).ready(function(){
         var geoLocation = $("#geo_location").val();
         console.log("Submit image url: "+imageUrl);
         $.ajax({
-            url: "http://localhost:8080/api/extension_upload",
+            url: UPLOAD_URL,
             type: "POST",
             data: {"streamName": streamName,
                    "comment": comment,
@@ -97,6 +97,10 @@ $(document).ready(function(){
             success: function(data){
                 var msg = JSON.parse(data);
                 alert(msg.message);
+                if (msg.added){
+                    console.log("Added");
+                    window.close();
+                }
             }
         });
     });
