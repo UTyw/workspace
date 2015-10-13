@@ -9,7 +9,7 @@ body{
 #output{
     width: 400px;
     margin-left:30px;
-    display: none;
+    /*display: none;*/
 }
 #image{
     margin-left: 20px;
@@ -44,12 +44,13 @@ body{
     height: 300px;
 }
 #geo_location{
-    width: 250px;
+    width: 300px;
     padding: 5px;
     height: 30px;
     border-spacing: 8px;
     box-sizing: border-box;
-    font-size: 24;
+    font-size: 16;
+    text-align: center;
 }
 .ui-autocomplete {
     max-height: 200px;

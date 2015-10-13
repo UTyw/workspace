@@ -1,9 +1,13 @@
 var _marker = 0;
 var _map;
-var austin = {lat: 30.25, lng: -97.75}
+var austin = {lat: 30.25, lng: -97.75};
+var STREAM_AUTOCOMPLETE_URL = "http://localhost:8080/api/stream_autocomplete";
+var UPLOAD_URL = "http://localhost:8080/api/extension_upload";
 
 function showLocation(location){ // show the location of current Marker
-   $("#geo_location").value = location.toString();
+   console.log("Show location changes")
+   $("#geo_location").val(location.toString());
+    //$("#geo_location").placeholder = location.toString();
     //use getPosition().lat() and getPosition().lng() to get location in degrees
 }
 
@@ -60,8 +64,8 @@ $(document).ready(function(){
     var cache = {};
     $("#stream_name").autocomplete({
         minLength: 1,
-        source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
-	    /*source: function(request, response){
+        /*source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]*/
+	    source: function(request, response){
             var cache = {};
             var KeywordSet = [];
             var term = $.ui.autocomplete.escapeRegex(request.term);
@@ -70,51 +74,62 @@ $(document).ready(function(){
                 response(cache[term]);
                 return;
             }
-            $.getJSON("/api/autocomplete", {"keywords": term}, function(data, status, xhr){
+            $.getJSON("http://localhost:8080/api/stream_autocomplete", {"keywords": term}, function(data, status, xhr){
                 cache[term] = data;
                 response(data);
             })
-        }*/
+        }
     });
     $("#upload_form").on("submit", function(e){
         e.preventDefault();
+        var streamName = $("#stream_name").val();
+        var comment = $("#comment").val();
         var imageUrl = $("#imageLinkUrl").attr("href");
+        var geoLocation = $("#geo_location").val();
         console.log("Submit image url: "+imageUrl);
         $.ajax({
-            url: $(this).attr("action"),
+            url: "http://localhost:8080/api/extension_upload",
             type: "POST",
-            data: {"imageUrl": imageUrl,
-                   "geoLocation": [0,0] },
+            data: {"streamName": streamName,
+                   "comment": comment,
+                   "imageUrl": imageUrl,
+                   "geoLocation": geoLocation},
             success: function(data){
-                alert("Success");
+                var msg = JSON.parse(data);
+                alert(msg.message);
             }
         });
     });
     $("#map_canvas").gmap({
             zoom: 10,
-            center: austin,
+            /*center: austin,*/
             mapTypeId: google.maps.MapTypeId.TERRAN
+        }, function(){
+            $("#map_canvas").gmap("get","map").setOptions({"center":austin});
         }).bind('init', function(event, map){
             _map = map;
             console.log("Bind functions to map");
-            _marker = 0;
-            var myMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(37.661932, -94.306856),
-                map: map,
-            });
-            $(map).click(function(e){
-                $("#map_canvas").gmap('addMarker', {
-                        'position': new google.maps.LatLng(e.latLng.lat(), e.latLng.lng()),
-                        'draggable': true,
-                        'map': map
-                    }, function(map, marker){
-                        _marker = marker;
-                        console.log("New Marker generated");
-                    }).dragend(function(evnt){
-                        console.log("Marker dragged");
-                        $(map).setCenter(evnt.latLng);
-                        showLocation(evnt.latLng);
-                    });
+            //_marker = 0;
+            $(map).click(function(event){
+                if (_marker == 0){
+                    $("#map_canvas").gmap('addMarker', {
+                            'position': new google.maps.LatLng(event.latLng.lat(), event.latLng.lng()),
+                            'draggable': true,
+                            'center': austin,
+                            'map': map
+                        }, function(map, marker){
+                            _marker = marker;
+                            showLocation(marker.getPosition());
+                            console.log("New Marker generated");
+                        }).dragend(function(event){
+                            console.log("Marker dragged");
+                            $("#map_canvas").gmap("get","map").setOptions({"center":event.latLng});
+                            showLocation(event.latLng);
+                        });
+                }else{
+                    _marker.setPosition(event.latLng);
+                    showLocation(event.latLng);
+                }
             });
         }); // end of adding gmap
 }); // end of ready()

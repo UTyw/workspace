@@ -5,8 +5,8 @@ function onClickHandler(info, tab) {
   var url = "upload_popup.html#" + image_url;
   chrome.windows.create({"url": url,
                          "type": "popup",
-                         "width": 460,
-                         "height": 600});
+                         "width": 500,
+                         "height": 700});
   //console.log("Image url: " + image_url);
   //console.log("Popup window id: " + popup_window);
 };
