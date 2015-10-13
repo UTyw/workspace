@@ -101,7 +101,7 @@ $(document).ready(function(){
         });
     });
     $("#map_canvas").gmap({
-            zoom: 10,
+            zoom: 2,
             /*center: austin,*/
             mapTypeId: google.maps.MapTypeId.TERRAN
         }, function(){
