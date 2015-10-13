@@ -5,24 +5,21 @@
   "description": "Upload images to Connexus through extension",
   "version": "0.0",
 
-  "icons":{
-    "16": "images/icon-bitty.png",
-    "48": "images/icon-small.png",
-    "128": "images/icon-large.png"
-  },
-
   "background":{
-    "scripts": ["sample.js"]
+    "scripts": ["uploadbackground.js"]
   },
 
   "browser_action":{
     "default_icon":"images/icon.png"
   },
-  
+
+  "content_security_policy": "default-src 'self'; font-src *;img-src *; style-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com/;script-src 'self' 'unsafe-eval' https://maps.google.com/ https://*.googleapis.com/",
+
   "permissions":[
+    "tabs",
     "activeTab", 
     "contextMenus",
-    "https:ajax.googleapis.com",
-    "http://localhost:8080/api/*"
+    "<all_urls>"
   ]
+
 }
